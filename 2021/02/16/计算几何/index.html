@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      715 字
+      671 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      7
        分钟
     </span>
   
@@ -232,23 +232,9 @@
 <p>##前言</p>
 <p>计算几何主要是 板子+思维。</p>
 <p>计算几何的很多题目不会说特别难，主要是费工夫。<br><del>当你把该做的题都做完了，就可以开计算几何了（暴论）</del></p>
-<p>板子一般都会提前准备好，并且你一定一定要好好验证板子的正确性，避免边界问题或者假的复杂度。<br>各大oj都有相应的题目，可以自己去找找。<br><strong>(ps：曾经某人因其Millar_rabin板子疯狂出锅成为了ccpc区域赛锅王。）</strong></p>
+<p>板子一般都会提前准备好，并且你一定一定要好好验证板子的正确性，避免边界问题或者假的复杂度。<br>各大oj都有相应的题目，可以自己去找找。<br><strong>(ps：曾经某人因其Millar_rabin板子疯狂出锅成为了ccpc区域赛某队锅王。）</strong></p>
 <p>思维就要靠训练提升，然后很多知识能和高中数学、数学竞赛的数学以及高数能联系起来。</p>
 <p>然后板子和知识面还是挺广的。因为讲课时间问题 <del>（其实是懒）</del>，我只做了前一小部分。<br><strong>（dbq QAQ）</strong><br>之后我会慢慢做完，从博客里面完善，以及会在群里发pdf和cpp的压缩包。</p>
-<p>（ps：目录只有一级标题像“前置知识“可以跳转QAQ）</p>
-<ul>
-<li><a href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86">前置知识</a><ul>
-<li><a href="#%E5%B8%B8%E7%94%A8%E5%B8%B8%E6%95%B0">常用常数</a></li>
-<li><a href="#%E5%BC%A7%E5%BA%A6%E8%A7%92%E5%BA%A6%E5%8F%98%E6%8D%A2">弧度角度变换</a></li>
-<li><a href="#%E4%B8%89%E6%80%81%E5%87%BD%E6%95%B0">三态函数</a></li>
-</ul>
-</li>
-<li><a href="#%E8%A1%A8%E7%A4%BA%E4%B8%8E%E8%BF%90%E7%AE%97">表示与运算</a><ul>
-<li><a href="#%E7%82%B9%E5%92%8C%E5%90%91%E9%87%8F">点和向量</a></li>
-</ul>
-</li>
-</ul>
-<p><span id="前置知识"></span></p>
 <h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h4 id="常用常数"><a href="#常用常数" class="headerlink" title="常用常数"></a>常用常数</h4><p>我们由 $cos(\pi)=-1.0$ 可以知道 $\pi=arccos(-1.0)$。<br>$arccos(x)$ 是 $cos(x)$ 的反函数。<br>在cpp里面，使用 acos 表示 $arccos$</p>
 <p>而大部分计算几何题目是 spj ，会根据你的答案的精度进行判断。<br>我们计算几何的很多函数都要用到 eps 即 $\varepsilon$。<br>eps 是小数点后多少位一般根据题目判断。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> Pi=<span class="hljs-built_in">acos</span>(<span class="hljs-number">-1.0</span>);<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> eps=<span class="hljs-number">1e-10</span>;<span class="hljs-comment">//1e-n,n根据题目要求;</span><br></code></pre></td></tr></table></figure>
@@ -257,7 +243,6 @@
 <h4 id="三态函数"><a href="#三态函数" class="headerlink" title="三态函数"></a>三态函数</h4><p>先说一下，尽管double能存下$1.79769*10^{308}$这么大的数,但是double的有效数字是有限的，大概是15、16位。<br>而且很多运算会损失精度。<br>很多时候我们判断一个数的符号或者判断两个数相等因为精度问题就不那么方便。所以，我们引进三态函数即符号函数。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sgn</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">fabs</span>(x)&lt;eps)<span class="hljs-comment">//fabs是浮点数的绝对值函数</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<span class="hljs-comment">//等于0的情况</span><br>    <span class="hljs-keyword">if</span>(x&lt;<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<span class="hljs-comment">//小于0的情况</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<span class="hljs-comment">//最后只剩下大于0的情况</span><br>&#125;<br><span class="hljs-comment">//判断两个数相等只需要两个数作差看sgn是否为0</span><br></code></pre></td></tr></table></figure>
 <p>看到这里，其实计算几何很简单，对吧。</p>
-<p><span id="表示与运算"></span></p>
 <h2 id="表示与运算"><a href="#表示与运算" class="headerlink" title="表示与运算"></a>表示与运算</h2><h4 id="点和向量"><a href="#点和向量" class="headerlink" title="点和向量"></a>点和向量</h4>
             </div>
             <hr>
